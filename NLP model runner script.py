@@ -10,14 +10,14 @@ def generar_respuesta(modelo_val, prompt_val):
         prompt_val, # El texto de entrada (prompt) que se envía al modelo
         max_tokens = 1024, # Máximo número de tokens que puede generar en la respuesta
         temperature = 0.6, # Controla la aleatoriedad (0 = determinista, 1 = muy aleatorio)
-        top_p = 0.9, # Muestreo nucleus: considera tokens que sumen hasta 90% de probabilidad
+        top_p = 0.95, # Muestreo nucleus: considera tokens que sumen determinado porcentaje de probabilidad
         top_k = 40, # Considera solo los 40 tokens más probables en cada paso
-        repeat_penalty = 1.05, # Penaliza la repetición de palabras (>1 reduce repetición)
+        repeat_penalty = 1.1, # Penaliza la repetición de palabras (>1 reduce repetición)
         min_p = 0.05, # Probabilidad mínima que debe tener un token para ser considerado
         frequency_penalty = 0.1, # Penaliza tokens que aparecen frecuentemente
         presence_penalty = 0.1, # Penaliza tokens que ya aparecieron en el texto
         stream = True, # Retorna la respuesta token por token (streaming)
-        stop = ["User:", "Human:", "\n\n\n"], # Secuencias que detienen la generación
+        stop = ["\n\n"], # Secuencias que detienen la generación
     )
 
 # Función para cargar el modelo de lenguaje desde archivo
@@ -49,7 +49,7 @@ def cargar_modelo():
                 model_path = str(archivo_modelo), # Ruta del archivo del modelo
                 n_ctx = 32768, # Tamaño del contexto (memoria del modelo)
                 n_gpu_layers = -1, # Usar GPU para todas las capas (-1 = todas)
-                n_threads = os.cpu_count() // 2, # Usar la mitad de los núcleos del CPU
+                n_threads = os.cpu_count(), # Usar todos los núcleos de la CPU
                 n_batch = 512, # Tamaño del lote para procesamiento
                 use_mmap = True, # Usar memory mapping para cargar el modelo
                 use_mlock = True, # Bloquear memoria para evitar swapping
