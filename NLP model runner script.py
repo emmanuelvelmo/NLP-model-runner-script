@@ -9,7 +9,7 @@ def generar_respuesta(modelo_val, prompt_val):
     return modelo_val(
         prompt_val, # El texto de entrada (prompt) que se envía al modelo
         max_tokens = 1024, # Máximo número de tokens que puede generar en la respuesta
-        temperature = 0.6, # Controla la aleatoriedad (0=determinista, 1=muy aleatorio)
+        temperature = 0.6, # Controla la aleatoriedad (0 = determinista, 1 = muy aleatorio)
         top_p = 0.9, # Muestreo nucleus: considera tokens que sumen hasta 90% de probabilidad
         top_k = 40, # Considera solo los 40 tokens más probables en cada paso
         repeat_penalty = 1.05, # Penaliza la repetición de palabras (>1 reduce repetición)
