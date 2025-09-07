@@ -65,12 +65,6 @@ def cargar_modelo():
 # PUNTO DE PARTIDA
 modelo_nlp = cargar_modelo() # Cargar el modelo al iniciar el programa
     
-# Cargar modelo
-modelo_dir = str(list(pathlib.Path("gguf").glob("*.gguf"))[0]) # Obtener la ruta del primer modelo encontrado
-
-# Obtener solo el nombre del archivo del modelo
-modelo_nombre = pathlib.Path(modelo_dir).name # Extraer el nombre del archivo sin la ruta completa
-
 # Bucle principal del programa
 while True:
     texto_entrada = input("Input: ").strip()
