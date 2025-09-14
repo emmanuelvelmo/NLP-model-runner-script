@@ -3,22 +3,6 @@ import pathlib # Importa pathlib para manejo de rutas de archivos de manera mode
 import llama_cpp # Importa la librería para usar modelos de Llama en formato GGUF
 
 # FUNCIONES
-# Función para formatear el historial de mensajes
-def format_chat_template(historial_mensajes):
-    # Inicializa una cadena vacía que contendrá el prompt formateado
-    historial_formateado = ""
-    
-    # Itera sobre cada mensaje en el historial de conversación
-    for mensajes_val in historial_mensajes:
-        # Agrega cada mensaje el formato
-        historial_formateado += f"<|im_start|>{mensajes_val['role']}\n{mensajes_val['content']}<|im_end|>\n"
-    
-    # Agrega el token de inicio para la respuesta del asistente al final del prompt
-    historial_formateado += "<|im_start|>assistant\n"
-    
-    # Retorna el prompt completo formateado listo para ser enviado al modelo
-    return historial_formateado
-
 # Función para generar respuestas del modelo de lenguaje
 def generar_respuesta(modelo_val, prompt_val):
     # Llama al modelo con los parámetros especificados y retorna la respuesta
@@ -35,6 +19,22 @@ def generar_respuesta(modelo_val, prompt_val):
         stream = True, # Retorna la respuesta token por token (streaming)
         stop = ["</s>", "[INST]", "[/INST]", "<|im_end|>"], # Secuencias que detienen la generación
     )
+
+# Función para formatear el historial de mensajes
+def formateo_mensajes(historial_mensajes):
+    # Inicializa una cadena vacía que contendrá el prompt formateado
+    historial_formateado = ""
+    
+    # Itera sobre cada mensaje en el historial de conversación
+    for mensajes_val in historial_mensajes:
+        # Agrega cada mensaje el formato
+        historial_formateado += f"<|im_start|>{mensajes_val['role']}\n{mensajes_val['content']}<|im_end|>\n"
+    
+    # Agrega el token de inicio para la respuesta del asistente al final del prompt
+    historial_formateado += "<|im_start|>assistant\n"
+    
+    # Retorna el prompt completo formateado listo para ser enviado al modelo
+    return historial_formateado
 
 # Función para cargar el modelo de lenguaje desde archivo
 def cargar_modelo():
@@ -98,7 +98,7 @@ while True:
     historial_mensajes.append({"role": "user", "content": texto_entrada})
     
     # Aplicar formato de prompt usando el historial
-    prompt_formateado = format_chat_template(historial_mensajes)
+    prompt_formateado = formateo_mensajes(historial_mensajes)
     
     print() # Salto de línea
     
