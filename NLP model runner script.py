@@ -3,20 +3,21 @@ import pathlib # Importa pathlib para manejo de rutas de archivos de manera mode
 import llama_cpp # Importa la librería para usar modelos de Llama en formato GGUF
 
 # FUNCIONES
-# 
-def format_chat_template(messages):
-    # 
-    formatted = ""
+# Función para formatear el historial de mensajes
+def format_chat_template(historial_mensajes):
+    # Inicializa una cadena vacía que contendrá el prompt formateado
+    historial_formateado = ""
     
-    # 
-    for msg in messages:
-        formatted += f"<|im_start|>{msg['role']}\n{msg['content']}<|im_end|>\n"
+    # Itera sobre cada mensaje en el historial de conversación
+    for mensajes_val in historial_mensajes:
+        # Agrega cada mensaje el formato
+        historial_formateado += f"<|im_start|>{mensajes_val['role']}\n{mensajes_val['content']}<|im_end|>\n"
     
-    # 
-    formatted += "<|im_start|>assistant\n"
+    # Agrega el token de inicio para la respuesta del asistente al final del prompt
+    historial_formateado += "<|im_start|>assistant\n"
     
-    # 
-    return formatted
+    # Retorna el prompt completo formateado listo para ser enviado al modelo
+    return historial_formateado
 
 # Función para generar respuestas del modelo de lenguaje
 def generar_respuesta(modelo_val, prompt_val):
@@ -81,7 +82,7 @@ def cargar_modelo():
 modelo_nlp = cargar_modelo() # Cargar el modelo al iniciar el programa
 
 # Historial de mensajes
-messages = [{"role": "system", "content": "You're a helpful assistant; your answers are concise and precise."}]
+historial_mensajes = [{"role": "system", "content": "You're a helpful assistant; your answers are concise and precise."}]
 
 # Bucle principal del programa
 while True:
@@ -94,10 +95,10 @@ while True:
         continue # Retornar al inicio del while
     
     # Agregar mensaje de usuario al historial
-    messages.append({"role": "user", "content": texto_entrada})
+    historial_mensajes.append({"role": "user", "content": texto_entrada})
     
     # Aplicar formato de prompt usando el historial
-    prompt_formateado = format_chat_template(messages)
+    prompt_formateado = format_chat_template(historial_mensajes)
     
     print() # Salto de línea
     
@@ -115,10 +116,10 @@ while True:
             respuesta_completa += token_val
     
     # Agregar respuesta del asistente al historial
-    messages.append({"role": "assistant", "content": respuesta_completa.strip()})
+    historial_mensajes.append({"role": "assistant", "content": respuesta_completa.strip()})
         
     # Mantener un historial limitado para evitar sobrepasar el contexto
-    if len(messages) > 10: # Mantener máximo 5 intercambios (user + assistant)
-        messages = [messages[0]] + messages[-8:] # Conservar system prompt + últimos 4 intercambios
+    if len(historial_mensajes) > 10: # Mantener máximo 5 intercambios (user + assistant)
+        historial_mensajes = [historial_mensajes[0]] + historial_mensajes[-8:] # Conservar system prompt + últimos 4 intercambios
     
     print("\n") # Doble salto de línea al terminar respuesta
