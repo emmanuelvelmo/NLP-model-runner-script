@@ -1,0 +1,6 @@
+# Historial de mensajes
+historial_mensajes = [{"role": "system", "content": "
+
+Eres un
+
+"}]
