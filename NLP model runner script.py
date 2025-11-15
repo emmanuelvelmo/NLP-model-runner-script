@@ -81,8 +81,21 @@ def cargar_modelo():
 # PUNTO DE PARTIDA
 modelo_nlp = cargar_modelo() # Cargar el modelo al iniciar el programa
 
-# Historial de mensajes
-historial_mensajes = [{"role": "system", "content": "You're a helpful assistant; your answers are concise and precise."}]
+# Cargar plantilla externa si existe
+
+
+
+# Historial de mensajes. Usar plantilla externa o usar plantilla por defecto
+if :
+    historial_mensajes = [{"role": "system", "content": }]
+else :
+    historial_mensajes = [{"role": "system", "content": "You're a helpful assistant; your answers are concise and precise."}]
+
+
+
+
+
+
 
 # Bucle principal del programa
 while True:
